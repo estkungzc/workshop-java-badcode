@@ -46,8 +46,23 @@ class RegisterBusinessTest {
     }
 
     @Test
-    @DisplayName("Email is not in domain, it should be occur exception")
+    @DisplayName("Email is not in domain(gmail.com), it should be occur exception")
     public void case04() {
+        RegisterBusiness registerBusiness = new RegisterBusiness();
+        Speaker speaker = new Speaker();
+        speaker.setFirstName("Foo");
+        speaker.setLastName("Bar");
+        speaker.setEmail("foo.bar@hotmail.com");
+
+        Exception exception = assertThrows(SpeakerDoesntMeetRequirementsException.class, () ->
+                registerBusiness.register(null, speaker)
+        );
+        assertEquals("Speaker doesn't meet our standard rules.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Email is not in domain(live.com), it should be occur exception")
+    public void case05() {
         RegisterBusiness registerBusiness = new RegisterBusiness();
         Speaker speaker = new Speaker();
         speaker.setFirstName("Foo");
