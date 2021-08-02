@@ -7,7 +7,6 @@ public class RegisterBusiness {
     String[] domains = {"gmail.com", "live.com"};
 
     public Integer register(SpeakerRepository repository, Speaker speaker) {
-        Integer speakerId;
 
         if (!isFieldExist(speaker.getFirstName())) throw new ArgumentNullException("First name is required.");
         if (!isFieldExist(speaker.getLastName())) throw new ArgumentNullException("Last name is required.");
@@ -21,12 +20,11 @@ public class RegisterBusiness {
         speaker.setRegistrationFee(getFee(experienceYear));
 
         try {
-            speakerId = repository.saveSpeaker(speaker);
+            return repository.saveSpeaker(speaker);
         } catch (Exception exception) {
             throw new SaveSpeakerException("Can't save a speaker.");
         }
 
-        return speakerId;
     }
 
     private boolean isFieldExist(String field) {
