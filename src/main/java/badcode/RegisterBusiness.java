@@ -13,17 +13,16 @@ public class RegisterBusiness {
         if (!isFieldExist(speaker.getLastName())) throw new ArgumentNullException("Last name is required.");
         if (!isFieldExist(speaker.getEmail())) throw new ArgumentNullException("Email is required.");
 
-        String emailDomain = getEmailDomain(speaker.getEmail()); // Avoid ArrayIndexOutOfBound
-        if (Arrays.stream(domains).filter(it -> it.equals(emailDomain)).count() == 1) {
-            int exp = speaker.getExp();
-            speaker.setRegistrationFee(getFee(exp));
-            try {
-                speakerId = repository.saveSpeaker(speaker);
-            } catch (Exception exception) {
-                throw new SaveSpeakerException("Can't save a speaker.");
-            }
-        } else {
-            throw new SpeakerDoesntMeetRequirementsException("Speaker doesn't meet our standard rules.");
+        String speakerEmailDomain = getEmailDomain(speaker.getEmail()); // Avoid ArrayIndexOutOfBound
+        boolean isEmailInDomains = Arrays.stream(domains).filter(speakerEmailDomain::equals).count() == 1;
+        if (!isEmailInDomains) throw new SpeakerDoesntMeetRequirementsException("Speaker doesn't meet our standard rules.");
+
+        int exp = speaker.getExp();
+        speaker.setRegistrationFee(getFee(exp));
+        try {
+            speakerId = repository.saveSpeaker(speaker);
+        } catch (Exception exception) {
+            throw new SaveSpeakerException("Can't save a speaker.");
         }
 
         return speakerId;
