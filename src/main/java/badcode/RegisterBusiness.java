@@ -17,8 +17,9 @@ public class RegisterBusiness {
         boolean isEmailInDomains = Arrays.stream(domains).filter(speakerEmailDomain::equals).count() == 1;
         if (!isEmailInDomains) throw new SpeakerDoesntMeetRequirementsException("Speaker doesn't meet our standard rules.");
 
-        int exp = speaker.getExp();
-        speaker.setRegistrationFee(getFee(exp));
+        int experienceYear = speaker.getExp();
+        speaker.setRegistrationFee(getFee(experienceYear));
+
         try {
             speakerId = repository.saveSpeaker(speaker);
         } catch (Exception exception) {
@@ -32,15 +33,15 @@ public class RegisterBusiness {
         return field != null && !field.trim().equals("");
     }
 
-    int getFee(int exp) {
+    int getFee(int experienceYear) {
         int fee = 0;
-        if (exp <= 1) {
+        if (experienceYear <= 1) {
             fee = 500;
-        } else if (exp <= 3) {
+        } else if (experienceYear <= 3) {
             fee = 250;
-        } else if (exp <= 5) {
+        } else if (experienceYear <= 5) {
             fee = 100;
-        } else if (exp <= 9) {
+        } else if (experienceYear <= 9) {
             fee = 50;
         }
         return fee;
