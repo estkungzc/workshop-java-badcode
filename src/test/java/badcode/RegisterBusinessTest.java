@@ -75,4 +75,18 @@ class RegisterBusinessTest {
         assertEquals("Speaker doesn't meet our standard rules.", exception.getMessage());
     }
 
+    @Test
+    @DisplayName("Repository is null, it should be occur exception")
+    public void case06() {
+        RegisterBusiness registerBusiness = new RegisterBusiness();
+        Speaker speaker = new Speaker();
+        speaker.setFirstName("Foo");
+        speaker.setLastName("Bar");
+        speaker.setEmail("foo.bar@gmail.com");
+
+        Exception exception = assertThrows(SaveSpeakerException.class, () ->
+                registerBusiness.register(null, speaker)
+        );
+        assertEquals("Can't save a speaker.", exception.getMessage());
+    }
 }
