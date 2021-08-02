@@ -3,8 +3,7 @@ package badcode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class RegisterBusinessTest {
 
@@ -19,7 +18,7 @@ class RegisterBusinessTest {
     }
 
     @Test
-    @DisplayName("Have First name but Last name is null, it should be occur exception")
+    @DisplayName("Last name is null, it should be occur exception")
     public void case02() {
         RegisterBusiness registerBusiness = new RegisterBusiness();
         Speaker speaker = new Speaker();
@@ -32,7 +31,7 @@ class RegisterBusinessTest {
     }
 
     @Test
-    @DisplayName("Have First name and Last Name but Email is null, it should be occur exception")
+    @DisplayName("Email is null, it should be occur exception")
     public void case03() {
         RegisterBusiness registerBusiness = new RegisterBusiness();
         Speaker speaker = new Speaker();
@@ -46,7 +45,7 @@ class RegisterBusinessTest {
     }
 
     @Test
-    @DisplayName("Email is not in domain(gmail.com), it should be occur exception")
+    @DisplayName("Email is not in domain, it should be occur exception")
     public void case04() {
         RegisterBusiness registerBusiness = new RegisterBusiness();
         Speaker speaker = new Speaker();
@@ -61,18 +60,18 @@ class RegisterBusinessTest {
     }
 
     @Test
-    @DisplayName("Email is not in domain(live.com), it should be occur exception")
+    @DisplayName("Email is invalid, it should be occur exception")
     public void case05() {
         RegisterBusiness registerBusiness = new RegisterBusiness();
         Speaker speaker = new Speaker();
         speaker.setFirstName("Foo");
         speaker.setLastName("Bar");
-        speaker.setEmail("foo.bar@hotmail.com");
+        speaker.setEmail("foo.barzxczxc");
 
-        Exception exception = assertThrows(SpeakerDoesntMeetRequirementsException.class, () ->
+        Exception exception = assertThrows(DomainEmailInvalidException.class, () ->
                 registerBusiness.register(null, speaker)
         );
-        assertEquals("Speaker doesn't meet our standard rules.", exception.getMessage());
+        assertNull(exception.getMessage());
     }
 
     @Test
@@ -89,4 +88,5 @@ class RegisterBusinessTest {
         );
         assertEquals("Can't save a speaker.", exception.getMessage());
     }
+
 }
